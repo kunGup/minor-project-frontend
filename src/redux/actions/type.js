@@ -1,0 +1,8 @@
+export const GETALL_FOLDERS = "GETALL_FOLDERS";
+export const ADDNEW_FOLDER = "ADDNEW_FOLDER";
+export const DELETE_FOLDER = "DELETE_FOLDER";
+export const SUMMARIZE_YT = "SUMMARIZE_YT";
+export const SAVE_NOTE = "SAVE_NOTE";
+export const GETALL_NOTES = "GETALL_NOTES";
+export const UPDATE_FOLDER = "UPDATE_FOLDER";
+export const DELETE_NOTE = "DELETE_NOTE";
