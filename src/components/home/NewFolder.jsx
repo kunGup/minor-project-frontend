@@ -3,7 +3,7 @@ import React from 'react'
 import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 import {useDispatch} from 'react-redux'
-import {addNewFolder} from '../../redux/actions/'
+import { addNewFolder } from "../../api";
 
 function NewFolder() {
     const dispatch = useDispatch()
@@ -11,13 +11,15 @@ function NewFolder() {
     const [text,setText] = React.useState('')
     const handleText = (e)=>{
       setText(e.target.value)
-
     }
     const handleClick = (e) => {
       e.preventDefault();
-      dispatch(addNewFolder(text));
-      setText("");
-      handleClose();
+      addNewFolder(text)
+        .then(()=>{
+          dispatch({type:"UPDATE_RUN"})
+          setText("");
+          handleClose();
+        })
     };
     const handleOpen = () => setNewFolderOpen(true);
     const handleClose = () => setNewFolderOpen(false);

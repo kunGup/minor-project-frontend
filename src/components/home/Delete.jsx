@@ -1,13 +1,22 @@
 import { Box, Button, Modal, Stack, Typography } from '@mui/material';
 import React from 'react'
-import {useDispatch} from 'react-redux'
-import { deleteFolder } from "../../redux/actions";
-function Delete({ deleteOpen, handleClose, folder }) {
+import { deleteNote,deleteFolder } from '../../api';
+import { useDispatch } from 'react-redux';
+function Delete({ deleteOpen, handleClose, item, itemType }) {
   const dispatch = useDispatch()
   const handleClick = () => {
-    dispatch(deleteFolder(folder));
-    handleClose();
+    dispatch({type:"UPDATE_RUN"})
+    if(itemType === "note"){
+      deleteNote(item).then(() => {
+        handleClose();
+      });
+    }else if(itemType === "folder"){
+      deleteFolder(item).then(() => {
+        handleClose();
+      });
+    }
   };
+  
   return (
     <Modal open={deleteOpen} onClose={handleClose}>
       <Box

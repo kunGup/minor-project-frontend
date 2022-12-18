@@ -72,3 +72,7 @@ export const addNoteToFolder = (folderId,noteId) => async (dispatch) => {
     console.log("err after calling addNoteToFolder: ", err);
   }
 };
+
+// export const updateRun = () => {
+//     dispatch({type: actionTypes.UPDATE_RUN})
+// }

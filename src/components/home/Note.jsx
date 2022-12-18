@@ -1,46 +1,46 @@
-import React from 'react'
+import React from "react";
 import { Box, Typography, Stack } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
-import FolderOpenIcon from "@mui/icons-material/FolderOpen";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import LanguageIcon from "@mui/icons-material/Language";
-import Delete from './Delete';
-import {Link} from 'react-router-dom'
+import Delete from "./Delete";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addNoteToFolder } from '../../redux/actions';
-import { useEffect } from 'react';
-import { getAllFolders } from "../../redux/actions";
+import { addNoteToFolder } from "../../api";
+import { useEffect, useState } from "react";
+import moment from "moment";
+import FolderButton from "../FolderButton";
 function shorten(text, count) {
   return text.slice(0, count) + (text.length > count ? "..." : "");
 }
 
-function Note({note}) {
-    const { dispatch } = useDispatch();
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [deleteOpen, setDeleteOpen] = React.useState(false);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
-    const handleDeleteOpen = () => setDeleteOpen(true);
-    const handleDeleteClose = () => setDeleteOpen(false);
-    
-    useEffect(() => {
-      // dispatch(getAllFolders());
-    }, []);
-    
-    const folders = useSelector(state=>state.folders)
-    const addToFolder = (folderId)=>{
-      dispatch(addNoteToFolder(folderId,note._id));
-      handleClose()
-    }
+function Note({ note, folders, showAddToFolderButton = true }) {
+  const { dispatch } = useDispatch();
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleDeleteOpen = () => setDeleteOpen(true);
+  const handleDeleteClose = () => setDeleteOpen(false);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const addToFolder = (folderId) => {
+    addNoteToFolder(folderId, note._id).then(() => {
+      console.log("hurray");
+      handleClose();
+    });
+  };
+
+  const showFolderButton = () => {
+    return (
+      showAddToFolderButton && (
+        <FolderButton folders={folders} addToFolder={addToFolder} />
+      )
+    );
+  };
+  
   return (
     <Box
       sx={{
@@ -106,42 +106,26 @@ function Note({note}) {
           alignItems: "center",
         }}
       >
-        <Typography variant="body2">2 days ago</Typography>
+        <Typography variant="body2">
+          {moment(note.createdAt).fromNow()}
+        </Typography>
         <Box>
-          <Tooltip title="Add to">
-            <IconButton aria-label="add to" sx={{}} onClick={handleClick}>
-              <FolderOpenIcon />
-            </IconButton>
-          </Tooltip>
-          <Menu
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-          >
-            {folders.map((folder) => (
-              <MenuItem onClick={()=>addToFolder(folder._id)} key={folder._id}>
-                {folder.title}
-              </MenuItem>
-            ))}
-          </Menu>
+          {showFolderButton()}
           <Tooltip title="Delete">
             <IconButton aria-label="delete" sx={{}} onClick={handleDeleteOpen}>
               <DeleteIcon />
             </IconButton>
           </Tooltip>
-          <Delete deleteOpen={deleteOpen} handleClose={handleDeleteClose} />
+          <Delete
+            deleteOpen={deleteOpen}
+            handleClose={handleDeleteClose}
+            item={note}
+            itemType="note"
+          />
         </Box>
       </Stack>
     </Box>
   );
 }
 
-export default Note
+export default Note;

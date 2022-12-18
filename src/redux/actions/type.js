@@ -6,3 +6,4 @@ export const SAVE_NOTE = "SAVE_NOTE";
 export const GETALL_NOTES = "GETALL_NOTES";
 export const UPDATE_FOLDER = "UPDATE_FOLDER";
 export const DELETE_NOTE = "DELETE_NOTE";
+export const UPDATE_RUN = "UPDATE_RUN";

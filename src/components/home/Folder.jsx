@@ -10,16 +10,14 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Delete from './Delete';
-import {useDispatch} from 'react-redux'
-import {deleteFolder} from '../../redux/actions'
 import {Link} from 'react-router-dom'
 
-function Folder({folder}) {
-  const dispatch = useDispatch()
+function Folder({folder,run=undefined,setRun=f=>f}) {
   
   const [deleteOpen, setDeleteOpen] = React.useState(false);
-  const handleOpen = () => setDeleteOpen(true);
-  const handleClose = () => setDeleteOpen(false);
+  const handleDeleteOpen = () => setDeleteOpen(true);
+  const handleDeleteClose = () => setDeleteOpen(false);
+
   return (
     <Box
       sx={{
@@ -46,11 +44,17 @@ function Folder({folder}) {
             bottom: "5px",
             right: "5px",
           }}
-          onClick={handleOpen}
+          onClick={handleDeleteOpen}
         >
           <DeleteIcon />
         </IconButton>
       </Tooltip>
+      <Delete
+        deleteOpen={deleteOpen}
+        handleClose={handleDeleteClose}
+        item={folder}
+        itemType="folder"
+      />
       <Box
         sx={{
           height: "100%",
@@ -66,7 +70,6 @@ function Folder({folder}) {
             {folder.title}
           </Typography>
         </Link>
-        <Delete deleteOpen={deleteOpen} handleClose={handleClose} folder={folder}/>
       </Box>
     </Box>
   );
