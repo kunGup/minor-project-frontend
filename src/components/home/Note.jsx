@@ -56,7 +56,7 @@ function Note({ note, folders, showAddToFolderButton = true }) {
       <Box
         sx={{
           flex: "9",
-          background: "#1976D2",
+          background: "#c1c3c7",
           borderRadius: "10px",
           display: "flex",
           flexDirection: "column",

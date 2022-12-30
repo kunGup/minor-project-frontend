@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Outlet, Link } from "react-router-dom";
+import {Link, Navigate } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -23,6 +24,9 @@ import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Home from '../components/Home'
 import Summarizer from "../components/Summarizer";
+import { signout } from "../auth";
+import Note from "./Note";
+import Folder from "./Folder";
 
 const drawerWidth = 240;
 
@@ -75,25 +79,26 @@ let menuArr = [
   {
     text: "Home",
     icon: <HomeIcon />,
-    link:"/home"
+    link: "/home",
   },
   {
     text: "YT summarizer",
     icon: <YouTubeIcon />,
-    link:"/ytsum"
+    link: "/ytsum",
   },
   {
     text: "Text summarizer",
     icon: <TextSnippetIcon />,
-    link:"/textsum"
+    link: "/textsum",
   },
   {
     text: "Logout",
     icon: <LogoutIcon />,
+    link: "/",
   },
 ];
 
-export default function PersistentDrawerLeft({component}) {
+export default function Dashboard({children}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
 
@@ -111,7 +116,6 @@ export default function PersistentDrawerLeft({component}) {
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
-            
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -151,7 +155,13 @@ export default function PersistentDrawerLeft({component}) {
         <List>
           {menuArr.map((menu, index) => (
             <ListItem key={index} disablePadding>
-              <Link to={menu?.link} style={{display:"block",textDecoration:"none"}}>
+              <Link
+                to={menu?.link}
+                style={{ display: "block", textDecoration: "none" }}
+                onClick={() => {
+                  index === menuArr.length - 1 && signout();
+                }}
+              >
                 <ListItemButton>
                   <ListItemIcon>{menu.icon}</ListItemIcon>
                   <ListItemText primary={menu.text} />
@@ -163,7 +173,7 @@ export default function PersistentDrawerLeft({component}) {
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <Outlet/>
+        {children}
       </Main>
     </Box>
   );

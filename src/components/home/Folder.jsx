@@ -58,7 +58,7 @@ function Folder({folder,run=undefined,setRun=f=>f}) {
       <Box
         sx={{
           height: "100%",
-          background: "#1976D2",
+          background: "#c1c3c7",
           borderRadius: "10px",
           display: "flex",
           justifyContent: "center",
