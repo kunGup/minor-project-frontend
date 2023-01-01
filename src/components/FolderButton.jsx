@@ -4,8 +4,10 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+import { isAuthenticated } from '../auth';
 
 function FolderButton({folders,addToFolder}) {
+    const {token} = isAuthenticated()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -35,7 +37,10 @@ function FolderButton({folders,addToFolder}) {
         }}
       >
         {folders.map((folder) => (
-          <MenuItem onClick={() => addToFolder(folder._id)} key={folder._id}>
+          <MenuItem
+            onClick={() => addToFolder(folder._id, token)}
+            key={folder._id}
+          >
             {folder.title}
           </MenuItem>
         ))}

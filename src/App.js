@@ -1,5 +1,5 @@
 import './App.css';
-import {BrowserRouter,Switch,Route} from "react-router-dom";
+import {BrowserRouter,Routes,Route} from "react-router-dom";
 import Landing from './pages/Landing';
 import Dashboard from "./pages/Dashboard";
 import Home from "./components/Home";
@@ -9,24 +9,23 @@ import Folder from './pages/Folder';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import PrivateRoute from './auth/PrivateRoute';
-import AppRoute from './core/AppRoute';
 
 function App() {
   return (
     <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={<Landing />} />
-        <Route exact path={['/home','/ytsum','/note/:id','/folder/:id']}>
-          <Dashboard>
-            <Route path="/home" component={<Home/>}/>
-            <Route path="/ytsum" component={<Summarizer/>}/>
-            <Route path="/note/:id" component={<Note/>}/>
-            <Route path="/folder/:id" component={<Folder/>}/>
-          </Dashboard>
+      <Routes>
+        <Route exact path="/" element={<Landing />} />
+        <Route element={<PrivateRoute/>}>
+          <Route path="/" element={<Dashboard/>}>
+              <Route path="home" element={<Home />} />
+              <Route path="ytsum" element={<Summarizer />} />
+              <Route path="note/:id" element={<Note />} />
+              <Route path="folder/:id" element={<Folder />} />
+          </Route>
         </Route>
-        <Route path="/signin" exact component={<Signin />} />
-        <Route path="/signup" exact component={<Signup />} />
-      </Switch>
+        <Route path="/signin" exact element={<Signin />} />
+        <Route path="/signup" exact element={<Signup />} />
+      </Routes>
     </BrowserRouter>
   );
 }

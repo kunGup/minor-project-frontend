@@ -10,14 +10,14 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Delete from './Delete';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 function Folder({folder,run=undefined,setRun=f=>f}) {
   
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const handleDeleteOpen = () => setDeleteOpen(true);
   const handleDeleteClose = () => setDeleteOpen(false);
-
+  const  navigate = useNavigate()
   return (
     <Box
       sx={{
@@ -64,12 +64,11 @@ function Folder({folder,run=undefined,setRun=f=>f}) {
           justifyContent: "center",
           alignItems: "center",
         }}
+        onClick={() => navigate(`/folder/${folder._id}`)}
       >
-        <Link to={`/folder/${folder._id}`}>
-          <Typography variant="body2" sx={{ textAlign: "center" }}>
-            {folder.title}
-          </Typography>
-        </Link>
+        <Typography variant="body2" sx={{ textAlign: "center" }}>
+          {folder.title}
+        </Typography>
       </Box>
     </Box>
   );

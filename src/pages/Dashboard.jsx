@@ -1,6 +1,6 @@
 import * as React from "react";
-import {Link, Navigate } from "react-router-dom";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import greeting from 'greeting-time'
+import {Link, Navigate, Outlet,useLocation,useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -24,7 +24,7 @@ import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Home from '../components/Home'
 import Summarizer from "../components/Summarizer";
-import { signout } from "../auth";
+import { isAuthenticated, signout } from "../auth";
 import Note from "./Note";
 import Folder from "./Folder";
 
@@ -98,8 +98,9 @@ let menuArr = [
   },
 ];
 
-export default function Dashboard({children}) {
+export default function Dashboard() {
   const theme = useTheme();
+  const location = useLocation()
   const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
@@ -109,7 +110,8 @@ export default function Dashboard({children}) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  const navigate = useNavigate();
+  const {user} = isAuthenticated()
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -125,7 +127,7 @@ export default function Dashboard({children}) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Home
+            My Dashboard
           </Typography>
         </Toolbar>
       </AppBar>
@@ -143,6 +145,7 @@ export default function Dashboard({children}) {
         open={open}
       >
         <DrawerHeader>
+          {greeting(new Date())}, {user.name.split(' ')[0]}
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon />
@@ -154,26 +157,26 @@ export default function Dashboard({children}) {
         <Divider />
         <List>
           {menuArr.map((menu, index) => (
-            <ListItem key={index} disablePadding>
-              <Link
-                to={menu?.link}
-                style={{ display: "block", textDecoration: "none" }}
-                onClick={() => {
-                  index === menuArr.length - 1 && signout();
-                }}
-              >
-                <ListItemButton>
-                  <ListItemIcon>{menu.icon}</ListItemIcon>
-                  <ListItemText primary={menu.text} />
-                </ListItemButton>
-              </Link>
+            <ListItem
+              key={index}
+              disablePadding
+              onClick={() =>
+                index === menuArr.length - 1
+                  ? signout(() => navigate(menu.link))
+                  : navigate(menu.link)
+              }
+            >
+              <ListItemButton selected={location.pathname === menu.link}>
+                <ListItemIcon>{menu.icon}</ListItemIcon>
+                <ListItemText primary={menu.text} />
+              </ListItemButton>
             </ListItem>
           ))}
         </List>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        {children}
+        <Outlet />
       </Main>
     </Box>
   );

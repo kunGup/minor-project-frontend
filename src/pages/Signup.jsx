@@ -11,7 +11,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { Stack } from "@mui/system";
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { isAuthenticated, signup } from "../auth";
 import Navbar from "../components/Navbar";
 
@@ -125,7 +125,7 @@ function Signup() {
 
   const redirectUser = () => {
     if (user) {
-      return <Redirect to="/home" />;
+      return <Navigate to="/home" />;
     }
   };
 

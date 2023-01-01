@@ -6,18 +6,19 @@ import Tooltip from "@mui/material/Tooltip";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import LanguageIcon from "@mui/icons-material/Language";
 import Delete from "./Delete";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addNoteToFolder } from "../../api";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import FolderButton from "../FolderButton";
+import { isAuthenticated } from "../../auth";
 function shorten(text, count) {
   return text.slice(0, count) + (text.length > count ? "..." : "");
 }
 
 function Note({ note, folders, showAddToFolderButton = true }) {
-  const { dispatch } = useDispatch();
+  const {token,user} = isAuthenticated()
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleDeleteOpen = () => setDeleteOpen(true);
@@ -26,8 +27,9 @@ function Note({ note, folders, showAddToFolderButton = true }) {
     setAnchorEl(null);
   };
 
-  const addToFolder = (folderId) => {
-    addNoteToFolder(folderId, note._id).then(() => {
+  const addToFolder = (folderId,token) => {
+    
+    addNoteToFolder(folderId, note._id,token).then(() => {
       console.log("hurray");
       handleClose();
     });
@@ -41,6 +43,7 @@ function Note({ note, folders, showAddToFolderButton = true }) {
     );
   };
   
+  const navigate = useNavigate()
   return (
     <Box
       sx={{
@@ -65,6 +68,7 @@ function Note({ note, folders, showAddToFolderButton = true }) {
           padding: "10px",
           position: "relative",
         }}
+        onClick={() => navigate(`/note/${note._id}`)}
       >
         {note.type === 0 ? (
           <YouTubeIcon
@@ -85,10 +89,7 @@ function Note({ note, folders, showAddToFolderButton = true }) {
             }}
           />
         )}
-        <Link to={`/note/${note._id}`}>
-          <Typography variant="h6">{shorten(note.title, 30)}</Typography>
-        </Link>
-
+        <Typography variant="h6">{shorten(note.title, 30)}</Typography>
         <img
           src={note.pic}
           style={{

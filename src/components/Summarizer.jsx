@@ -1,24 +1,27 @@
 import { Button, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { summarizeYt, saveNote } from "../redux/actions";
+import { isAuthenticated } from "../auth";
+import { saveNote, summarizeYt } from "../api";
 function Summarizer() {
   const dispatch = useDispatch();
   const [algo, setAlgo] = React.useState("textrank");
   const [url, setUrl] = React.useState("");
   const handleChange = (e) => setAlgo(e.target.value);
-  const summary = useSelector((state) => state.summary);
+  const [summary,setSummary] = useState({})
+  const {user,token} = isAuthenticated()
   const summarize = (e) => {
     e.preventDefault();
-    dispatch(summarizeYt(url));
+    summarizeYt(url).then((data)=>{
+      setSummary({...data})
+    });
   };
-  const savenote = (e) => {
-    e.preventDefault();
-    dispatch(saveNote(summary));
+  const savenote = (summary) => {
+    saveNote(summary,token).then(()=>{
+      setSummary({});
+    })
   };
-  useEffect(() => {
-  }, [summary]);
   return (
     <Box>
       <form onSubmit={summarize}>
@@ -69,12 +72,10 @@ function Summarizer() {
             {summary.text}
           </Box>
           <Stack spacing={2} direction="row">
-            <form onSubmit={savenote}>
-              <Button type='submit' variant="outlined">Save</Button>
-              <Button variant="outlined" color="error">
-                Discard
-              </Button>
-            </form>
+            <Button type='submit' variant="outlined" onClick={()=>savenote(summary)}>Save</Button>
+            <Button variant="outlined" color="error">
+              Discard
+            </Button>
           </Stack>
         </>
       ) : null}

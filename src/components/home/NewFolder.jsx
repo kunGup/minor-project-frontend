@@ -4,8 +4,10 @@ import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 import {useDispatch} from 'react-redux'
 import { addNewFolder } from "../../api";
+import { isAuthenticated } from "../../auth";
 
 function NewFolder() {
+    const {token} = isAuthenticated()
     const dispatch = useDispatch()
     const [newFolderOpen, setNewFolderOpen] = React.useState(false);
     const [text,setText] = React.useState('')
@@ -14,12 +16,11 @@ function NewFolder() {
     }
     const handleClick = (e) => {
       e.preventDefault();
-      addNewFolder(text)
-        .then(()=>{
-          dispatch({type:"UPDATE_RUN"})
-          setText("");
-          handleClose();
-        })
+      addNewFolder(text, token).then(() => {
+        dispatch({ type: "UPDATE_RUN" });
+        setText("");
+        handleClose();
+      });
     };
     const handleOpen = () => setNewFolderOpen(true);
     const handleClose = () => setNewFolderOpen(false);

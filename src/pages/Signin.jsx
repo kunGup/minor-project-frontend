@@ -10,8 +10,8 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Stack } from "@mui/system";
-import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { authenticate, isAuthenticated, signin } from "../auth";
 import Navbar from "../components/Navbar";
 
@@ -26,7 +26,12 @@ function Signin() {
 
   const { email, password, error, loading, redirectToReferrer } = values;
   const { user } = isAuthenticated();
-
+  const {state} = useLocation()
+  useEffect(() => {
+    if(state)
+    setValues({ ...values, error: state.alert });
+  }, [])
+  
   const handleChange = (name) => (e) => {
     setValues({ ...values, error: false, [name]: e.target.value });
   };
@@ -108,10 +113,10 @@ function Signin() {
 
   const redirectUser = () => {
     if (redirectToReferrer) {
-      if (user) return <Redirect to="/home" />;
+      if (user) return <Navigate to="/home" />;
     }
     if (user) {
-      return <Redirect to="/home" />;
+      return <Navigate to="/home" />;
     }
   };
 

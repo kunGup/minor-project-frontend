@@ -12,8 +12,10 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import { isAuthenticated, signout } from "../auth";
+import { Link, useNavigate } from "react-router-dom";
 
-const settings = [ "Account", "Dashboard", "Logout"];
+
 
 const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -26,9 +28,10 @@ const Navbar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
+  const navigate = useNavigate()
+  const {user} = isAuthenticated()
   return (
-    <AppBar position="sticky" sx={{height: "60px", textAlign:"center"}}>
+    <AppBar position="sticky" sx={{ height: "60px", textAlign: "center" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "flex" }, mr: 1 }} />
@@ -51,11 +54,9 @@ const Navbar = () => {
           </Typography>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <Avatar alt="kemy Sharp" src="/static/images/avatar/2.jpg" />
+            </IconButton>
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
@@ -72,11 +73,34 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {isAuthenticated() && (
+                <MenuItem onClick={()=>navigate('/home')}>
+                  <Typography textAlign="center">
+                    Dashboard
+                  </Typography>
                 </MenuItem>
-              ))}
+              )}
+              {isAuthenticated() && (
+                <MenuItem onClick={()=>{signout(() => navigate("/"));}}>
+                  <Typography textAlign="center">
+                    Logout
+                  </Typography>
+                </MenuItem>
+              )}
+              {!isAuthenticated() && (
+                <MenuItem onClick={()=>navigate('/signin')}>
+                  <Typography textAlign="center">
+                    Signin
+                  </Typography>
+                </MenuItem>
+              )}
+              {!isAuthenticated() && (
+                <MenuItem onClick={()=>navigate('/signup')}>
+                  <Typography textAlign="center">
+                    Signup
+                  </Typography>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
         </Toolbar>
