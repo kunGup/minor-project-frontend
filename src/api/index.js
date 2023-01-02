@@ -1,10 +1,10 @@
 import axios from "axios";
 import { isAuthenticated } from "../auth";
-const BASE_URL = "http://localhost:8000";
+const API_URL = process.env.API_URL;
 
 export const getAllFolders = async (token) => {
   try {
-    const res = await axios.get(`${BASE_URL}/api/folders`, {
+    const res = await axios.get(`${API_URL}/folders`, {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
@@ -19,7 +19,7 @@ export const getAllFolders = async (token) => {
 
 export const getAllNotes = async (token) => {
   try {
-    const res = await axios.get(`${BASE_URL}/api/notes`, {
+    const res = await axios.get(`${API_URL}/notes`, {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
@@ -34,7 +34,7 @@ export const getAllNotes = async (token) => {
 
 export const addNoteToFolder = async (folderId, noteId, token) => {
   try {
-    const res = await fetch(`${BASE_URL}/api/folders`, {
+    const res = await fetch(`${API_URL}/folders`, {
       method: "PUT",
       headers: {
         "Content-type": "application/json",
@@ -55,7 +55,7 @@ export const addNoteToFolder = async (folderId, noteId, token) => {
 export const editFolderTitle = async ({folderId,title}, token) => {
   try {
     const res = await axios.put(
-      `${BASE_URL}/api/folders`,
+      `${API_URL}/folders`,
       {
         folderId,title
       },
@@ -74,7 +74,7 @@ export const editFolderTitle = async ({folderId,title}, token) => {
 export const deleteFolder = async (folder, token) => {
   try {
     console.log(folder);
-    const res = await axios.delete(`${BASE_URL}/api/folders/${folder._id}`, {
+    const res = await axios.delete(`${API_URL}/folders/${folder._id}`, {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
@@ -90,7 +90,7 @@ export const deleteFolder = async (folder, token) => {
 export const addNewFolder = async (title, token) => {
   try {
     const res = await axios.post(
-      `${BASE_URL}/api/folders`,
+      `${API_URL}/folders`,
       {
         title,
       },
@@ -109,7 +109,7 @@ export const addNewFolder = async (title, token) => {
 
 export const editNote = async (note, token) => {
   try {
-    const res = await axios.put(`${BASE_URL}/api/notes/${note._id}`, note, {
+    const res = await axios.put(`${API_URL}/notes/${note._id}`, note, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -125,7 +125,7 @@ export const editNote = async (note, token) => {
 export const deleteNote = async (note, token) => {
   try {
     console.log(note);
-    const res = await axios.delete(`${BASE_URL}/api/notes/${note._id}`, {
+    const res = await axios.delete(`${API_URL}/notes/${note._id}`, {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
@@ -141,7 +141,7 @@ export const deleteNote = async (note, token) => {
 export const saveNote = async (note, token) => {
   try {
     const res = await axios.post(
-      `${BASE_URL}/api/notes`,
+      `${API_URL}/notes`,
       { ...note },
       {
         headers: {
@@ -157,7 +157,7 @@ export const saveNote = async (note, token) => {
 
 export const summarizeYt = async (url) => {
   try {
-    const res = await axios.post(`${BASE_URL}/api/ytsum`, {
+    const res = await axios.post(`${API_URL}/ytsum`, {
       url,
     });
     return res.data;
