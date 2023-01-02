@@ -1,4 +1,4 @@
-const API = process.env.API_URL;
+const API = "https://ytsummarizer-backend.onrender.com/api";
 
 export const signup = (user) => {
   return fetch(`${API}/signup`, {

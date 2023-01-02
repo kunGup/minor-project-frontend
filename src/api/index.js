@@ -1,6 +1,6 @@
 import axios from "axios";
 import { isAuthenticated } from "../auth";
-const API_URL = process.env.API_URL;
+const API_URL = "https://ytsummarizer-backend.onrender.com/api";
 
 export const getAllFolders = async (token) => {
   try {
