@@ -1,9 +1,14 @@
-import { Button, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Button, Card, CardActionArea, CardContent, CardMedia, CircularProgress, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { isAuthenticated } from "../auth";
 import { saveNote, summarizeYt } from "../api";
+import RadialChart from "./summary/RadialChart";
+import BiaxialChart from "./summary/BiaxialChart";
+import Summaries from "./summary/Summaries";
+import Stats from "./summary/Stats";
+
 function Summarizer() {
   const dispatch = useDispatch();
   const [algo, setAlgo] = React.useState("textrank");
@@ -11,15 +16,20 @@ function Summarizer() {
   const handleChange = (e) => setAlgo(e.target.value);
   const [summary,setSummary] = useState({})
   const {user,token} = isAuthenticated()
+  const [loading,setLoading] = useState(false)
+  const [saved,setSaved] = useState(false)
   const summarize = (e) => {
     e.preventDefault();
+    setLoading(true)
+    setSaved(false);
     summarizeYt(url).then((data)=>{
-      setSummary({...data})
+      setSummary(data)
+      setLoading(false)
     });
   };
   const savenote = (summary) => {
     saveNote(summary,token).then(()=>{
-      setSummary({});
+      setSaved(true);
     })
   };
   return (
@@ -36,46 +46,43 @@ function Summarizer() {
         />
         <br />
         <br />
-        <Typography variant="h6" gutterBottom>
-          Choose Algorithm
-        </Typography>
-        <Select value={algo} onChange={handleChange} fullWidth>
-          <MenuItem value={"textrank"}>Text Rank</MenuItem>
-          <MenuItem value={"frequency"}>Frequency Based</MenuItem>
-          <MenuItem value={"lsa"}>Latent Semantic Analysis</MenuItem>
-          <MenuItem value={"luhn"}>Luhn Algorithm</MenuItem>
-          <MenuItem value={"transformer"}>Transformer Algorithm</MenuItem>
-        </Select>
-        <br />
-        <br />
-        <Button type="submit" variant="outlined">
-          Summarize
-        </Button>
+        {loading ? (
+          <Button type="submit" variant="outlined" disabled>
+            Summarizing... <CircularProgress />
+          </Button>
+        ) : (
+          <Button type="submit" variant="outlined">
+            Summarize
+          </Button>
+        )}
       </form>
-      {summary.text ? (
+      <br />
+      {summary.summary ? (
         <>
-          <Typography variant="h5" gutterBottom>
+          <Typography variant="h3" gutterBottom>
             Summarized Text
           </Typography>
-          <Box
-            sx={{
-              border: "1px solid #0c64f2",
-              borderRadius: "10px",
-              p: "10px",
-              textAlign: "justify",
-              background: "#73a5f5",
-              mb: "20px",
-              maxHeight: "300px",
-              overflowY: "scroll",
-            }}
-          >
-            {summary.text}
-          </Box>
+          <Summaries arr={summary.summary} />
+          <Stats arr={summary.summary} />
           <Stack spacing={2} direction="row">
-            <Button type='submit' variant="outlined" onClick={()=>savenote(summary)}>Save</Button>
-            <Button variant="outlined" color="error">
-              Discard
-            </Button>
+            {saved ? (
+              <Button
+                type="submit"
+                variant="outlined"
+                disabled
+                onClick={() => savenote(summary)}
+              >
+                Saved Successfully
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                variant="outlined"
+                onClick={() => savenote(summary)}
+              >
+                Save
+              </Button>
+            )}
           </Stack>
         </>
       ) : null}

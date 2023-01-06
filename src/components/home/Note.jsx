@@ -98,7 +98,7 @@ function Note({ note, folders, showAddToFolderButton = true }) {
             width: "100%",
           }}
         />
-        <Typography variant="body2">{shorten(note.text, 100)}</Typography>
+        <Typography variant="body2">{shorten(note.summary[0].summary, 100)}</Typography>
       </Box>
       <Stack
         direction="row"

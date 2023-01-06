@@ -25,6 +25,8 @@ import { getAllNotes, getAllFolders } from "../api";
 import FolderButton from "../components/FolderButton";
 import { isAuthenticated } from "../auth";
 import Delete from "../components/home/Delete";
+import Summaries from "../components/summary/Summaries";
+import Stats from "../components/summary/Stats";
 
 function Note() {
   const { id } = useParams();
@@ -33,7 +35,7 @@ function Note() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const [note, setNote] = useState({});
+  const [note, setNote] = useState(null);
   const [titleValue,setTitleValue] = useState("")
   const [folders, setFolders] = useState([]);
   const loadSingleNote = () => {
@@ -73,7 +75,7 @@ function Note() {
   const handleDeleteClose = () => setDeleteOpen(false);
   return (
     <>
-      {note === null ? (
+      {!note ? (
         <>
           <h1>Loading...</h1>
           <LinearProgress />
@@ -175,17 +177,14 @@ function Note() {
               sx={{
                 flex: "3",
                 // background: "green",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                minHeight: "50%",
+                // display: "flex",
+                // justifyContent: "center",
+                // alignItems: "center",
+                // minHeight: "50%",
               }}
             >
-              <Box>
-                <Typography variant="body1" sx={{ padding: "20px", pt: "0" }}>
-                  {note.text}
-                </Typography>
-              </Box>
+              <Summaries arr={note.summary} />
+              <Stats arr={note.summary} />
             </Box>
           </Stack>
         </>
