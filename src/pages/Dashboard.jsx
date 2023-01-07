@@ -87,11 +87,6 @@ let menuArr = [
     link: "/ytsum",
   },
   {
-    text: "Text summarizer",
-    icon: <TextSnippetIcon />,
-    link: "/textsum",
-  },
-  {
     text: "Logout",
     icon: <LogoutIcon />,
     link: "/",

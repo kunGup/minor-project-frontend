@@ -39,7 +39,7 @@ const Navbar = () => {
             variant="h5"
             noWrap
             component="a"
-            href=""
+            onClick={()=>navigate('/')}
             sx={{
               mr: 2,
               display: { xs: "flex" },
@@ -48,6 +48,7 @@ const Navbar = () => {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              cursor: 'pointer'
             }}
           >
             Summarizer
@@ -55,7 +56,7 @@ const Navbar = () => {
 
           <Box sx={{ flexGrow: 0 }}>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt="kemy Sharp" src="/static/images/avatar/2.jpg" />
+              <Avatar alt="kemy Sharp" />
             </IconButton>
             <Menu
               sx={{ mt: "45px" }}

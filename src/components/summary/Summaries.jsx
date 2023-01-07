@@ -15,6 +15,7 @@ function Summaries({arr}) {
                       mb: "20px",
                       maxHeight: "300px",
                       overflowY: "scroll",
+                      flex: 1
                     }}
                     variant="outlined"
                     key={obj.algo}

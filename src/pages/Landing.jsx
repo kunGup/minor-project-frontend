@@ -1,13 +1,15 @@
-import { Box, Stack, Typography } from '@mui/material'
-import React from 'react'
-import Navbar from '../components/Navbar'
+import { Box, Stack, Typography } from "@mui/material";
+import React from "react";
+import Navbar from "../components/Navbar";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 function Landing() {
+  const navigate = useNavigate();
   return (
     <>
       <Navbar />
@@ -34,13 +36,18 @@ function Landing() {
           >
             <Box>
               <Typography variant="h4" sx={{ padding: "20px", pd: "1" }}>
-                Summarize any Youtube Video or Text from a webpage.
+                Summarize any Youtube Video.
               </Typography>
               <Typography variant="h6" sx={{ padding: "20px", pt: "0" }}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo ut
-                distinctio quod sapiente accusantium. Dolores reiciendis
-                blanditiis dolore perspiciatis culpa!
+                An all rounder tool to summarize youtube videos and also save them into notes and folders for future so that you never have to worry about getting them lost.
               </Typography>
+              <Button
+                variant="contained"
+                sx={{ marginLeft: "20px" }}
+                onClick={() => navigate("/home")}
+              >
+                Get Started
+              </Button>
             </Box>
           </Box>
           <Box
@@ -59,7 +66,7 @@ function Landing() {
           </Box>
         </Stack>
       </Box>
-      <Box>
+      {/* <Box>
         <Typography variant="h4" sx={{ margin: "30px", textAlign: "center" }}>
           Our Offerings
         </Typography>
@@ -141,9 +148,9 @@ function Landing() {
             </CardActions>
           </Card>
         </Stack>
-      </Box>
+      </Box> */}
     </>
   );
 }
 
-export default Landing
+export default Landing;

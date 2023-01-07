@@ -15,7 +15,7 @@ function BiaxialChart({arr}) {
       return {
         name: obj.algo,
         "Time in sec": obj.execution_time,
-        words: obj.words
+        charLen: obj.charLen,
       };
     });
     
@@ -38,7 +38,7 @@ function BiaxialChart({arr}) {
       <Tooltip />
       <Legend />
       <Bar yAxisId="left" dataKey="Time in sec" fill="#8884d8" />
-      <Bar yAxisId="right" dataKey="words" fill="#82ca9d" />
+      <Bar yAxisId="right" dataKey="charLen" fill="#82ca9d" />
     </BarChart>
   );
 }

@@ -47,7 +47,7 @@ function Note({ note, folders, showAddToFolderButton = true }) {
   return (
     <Box
       sx={{
-        height: "300px",
+        // height: "300px",
         width: "200px",
         display: "flex",
         flexDirection: "column",
@@ -98,7 +98,7 @@ function Note({ note, folders, showAddToFolderButton = true }) {
             width: "100%",
           }}
         />
-        <Typography variant="body2">{shorten(note.summary[0].summary, 100)}</Typography>
+        {/* <Typography variant="body2">{shorten(note.summary[0].summary, 100)}</Typography> */}
       </Box>
       <Stack
         direction="row"
