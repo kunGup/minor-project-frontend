@@ -157,14 +157,15 @@ function Note() {
           <Stack
             sx={{
               flexDirection: { xs: "column", sm: "row" },
+              gap: "20px"
             }}
           >
             <Box
               sx={{
-                flex: "1",
+                flex: "2",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
+                // justifyContent: "center",
                 alignItems: "center",
               }}
             >

@@ -47,7 +47,7 @@ function Note({ note, folders, showAddToFolderButton = true }) {
   return (
     <Box
       sx={{
-        // height: "300px",
+        height: "200px",
         width: "200px",
         display: "flex",
         flexDirection: "column",
@@ -59,7 +59,9 @@ function Note({ note, folders, showAddToFolderButton = true }) {
       <Box
         sx={{
           flex: "9",
-          background: "#c1c3c7",
+          background: `linear-gradient(to bottom right,rgb(25,118,210),rgba(0,0,0,0)), url(${note.pic}) no-repeat center`,
+          backgroundSize: "cover",
+          border: "0.5px solid rgba(0,0,0,0.7)",
           borderRadius: "10px",
           display: "flex",
           flexDirection: "column",
@@ -75,6 +77,7 @@ function Note({ note, folders, showAddToFolderButton = true }) {
             fontSize="small"
             sx={{
               position: "absolute",
+              color: "white",
               top: "5px",
               right: "5px",
             }}
@@ -89,15 +92,17 @@ function Note({ note, folders, showAddToFolderButton = true }) {
             }}
           />
         )}
-        <Typography variant="h6">{shorten(note.title, 30)}</Typography>
-        <img
+        <Typography variant="body" color="white">
+          {shorten(note.title, 60)}
+        </Typography>
+        {/* <img
           src={note.pic}
           style={{
             objectFit: "contain",
             height: "90px",
             width: "100%",
           }}
-        />
+        /> */}
         {/* <Typography variant="body2">{shorten(note.summary[0].summary, 100)}</Typography> */}
       </Box>
       <Stack
