@@ -47,9 +47,15 @@ function Summarizer() {
         <br />
         <br />
         {loading ? (
-          <Button type="submit" variant="outlined" disabled>
-            Summarizing... <CircularProgress />
-          </Button>
+          <>
+            <Button type="submit" variant="outlined" disabled>
+              Summarizing... <CircularProgress />
+            </Button>
+            <Typography variant="body">
+              Please wait our Transformer Algo taking some more time but will
+              generate best results.
+            </Typography>
+          </>
         ) : (
           <Button type="submit" variant="outlined">
             Summarize
